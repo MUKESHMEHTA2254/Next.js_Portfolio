@@ -10,7 +10,7 @@ const Footer = () => {
       title: (
         <Image src={LinkedinIcon} width={35} height={35} alt="Linkedin Icon" />
       ),
-      path: "https://www.linkedin.com/in/mukesh-mehta-89b63b198/",
+      path: "https://www.linkedin.com/in/mukesh-mehta-89b63b198",
     },
     {
       title: (
