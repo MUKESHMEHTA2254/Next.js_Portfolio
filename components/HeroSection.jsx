@@ -29,9 +29,8 @@ const HeroSection = () => {
             />
           </h1>
           <p className="text-[#ADB7BE] text-lg lg:text-xl mb-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse eos
-            repellat neque voluptate iste veritatis numquam, ut fuga, ipsum
-            minima modi, optio laudantium doloremque a.
+            I am a full stack web developer with a passion for creating
+            interactive and responsive web applications.
           </p>
           <button className="px-6 py-3 w-full sm:w-fit rounded-full mr-4 bg-gradient-to-br from-blue-500 via-purple-800 to-pink-500 hover:bg-slate-200 text-white ">
             Hire Me
@@ -43,13 +42,13 @@ const HeroSection = () => {
           </button>
         </div>
         <div className="col-span-5 place-self-center mt-4 lg:mt-0 ">
-          <div className="rounded-full bg-[#181818]  w-[250px] h-[250px] lg:w-[350px] lg:h-[350px] relative ">
+          <div className="rounded-full bg-[#181818]  hover:bg-purple-800/70  w-[250px] h-[250px] lg:w-[300px] lg:h-[300px]  overflow-hidden shadow-md shadow-purple-500">
             <Image
               src="/images/poster.png"
               alt="logo"
-              width={300}
-              className="absolute  transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 "
-              height={300}
+              width={500}
+              className=" relative top-15 left-0 "
+              height={500}
               priority={true}
             />
           </div>

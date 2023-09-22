@@ -11,8 +11,8 @@ const projectsData = [
     description: "Project 1 description",
     image: "/images/projects/1.png",
     tag: ["All", "Next.js"],
-    gitUrl: "/",
-    previewUrl: "/",
+    gitUrl: "https://github.com/MUKESHMEHTA2254/Next.js_Portfolio",
+    previewUrl: "https://next-js-portfolio-blond.vercel.app",
   },
   {
     id: 2,
@@ -28,18 +28,18 @@ const projectsData = [
     title: "Car Rental Website",
     description: "Project 3 description",
     image: "/images/projects/3.png",
-    tag: ["All", "Next.js"],
+    tag: ["All", "Typescript"],
     gitUrl: "/",
     previewUrl: "/",
   },
   {
     id: 4,
-    title: "Typescript website",
+    title: "Ecommerce mern stack",
     description: "Project 4 description",
     image: "/images/projects/4.png",
-    tag: ["All", "Typescript"],
-    gitUrl: "/",
-    previewUrl: "/",
+    tag: ["All", "Next.js", "MERN"],
+    gitUrl: "https://github.com/MUKESHMEHTA2254/Ecommerce-mern-stack",
+    previewUrl: "https://next-js-ecommerce-2023.vercel.app/",
   },
 ];
 
@@ -86,6 +86,11 @@ const ProjectsSection = () => {
           onClick={handleTagChange}
           name="Typescript"
           isSelected={tag === "Typescript"}
+        />
+        <ProjectTag
+          onClick={handleTagChange}
+          name="MERN"
+          isSelected={tag === "MERN"}
         />
       </div>
       <ul ref={ref} className="grid md:grid-cols-3 gap-8 md:gap-12">

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import GithubIcon from "../public/github-icon.svg";
 import LinkedinIcon from "../public/linkedin-icon.svg";
@@ -7,6 +7,7 @@ import Image from "next/image";
 
 const EmailSection = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
@@ -14,21 +15,24 @@ const EmailSection = () => {
       subject: e.target.subject.value,
       message: e.target.message.value,
     };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/send";
 
-    const options = {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSONdata,
-    };
-    const response = await fetch(endpoint, options);
-    // const resData = await response.json();
-    if (response.status === 200) {
-      console.log("Message Sent");
-      setEmailSubmitted(true);
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log("Message Sent");
+        setEmailSubmitted(true);
+      } else {
+        console.error("Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
     }
   };
 
