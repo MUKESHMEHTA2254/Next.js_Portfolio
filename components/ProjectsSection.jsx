@@ -29,8 +29,8 @@ const projectsData = [
     description: "Project 3 description",
     image: "/images/projects/3.png",
     tag: ["All", "Typescript"],
-    gitUrl: "/",
-    previewUrl: "/",
+    gitUrl: "https://github.com/MUKESHMEHTA2254/Car_Rental_WebApp",
+    previewUrl: "https://car-rental-web-app-omega.vercel.app/",
   },
   {
     id: 4,

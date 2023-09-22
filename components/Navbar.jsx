@@ -1,7 +1,8 @@
 "use client";
+import "./Navbar.css"
 import Link from "next/link";
 import NavLink from "./NavLink";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import MenuOverlay from "./MenuOverlay";
 import GithubIcon from "../public/github-icon.svg";
@@ -33,35 +34,48 @@ const navLinks = [
     path: "https://github.com/MUKESHMEHTA2254",
   },
   {
-    title: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="feather feather-phone"
-      >
-        <path d="M23 1l-6 6"></path>
-        <path d="M17 1l6 6"></path>
-        <path d="M1 8l6-6"></path>
-        <path d="M1 12l6-6"></path>
-        <path d="M23 16l-6-6"></path>
-        <path d="M17 23l6-6"></path>
-        <path d="M1 16l6 6"></path>
-        <path d="M1 20l6 6"></path>
-      </svg>)
-    ,
-
-    path: "tel:9877494285",
+    title:<Image src="/images/projects/phone.png" width={30} height={30} alt="Linkedin Icon"/>,
+    path:"tel:9877494285",
   },
+  {
+    title:<Image src="/images/projects/mail.png" width={30} height={30} alt="Linkedin Icon"/>,
+    path:"mailto:mehtasagar437@gmail.com",
+  },
+
 ];
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
+   const [show, setShow] = useState("top");
+
+   const [lastScrollY, setLastScrollY] = useState(0);
+ 
+    const ControlNavbar = () => {
+      if (lastScrollY > 200 ) {
+        if (window.scrollY > lastScrollY) {
+          setShow("hide");
+        } else {
+          setShow("show");
+        }
+      } else {
+        setShow("top");
+      }
+
+      setLastScrollY(window.scrollY);
+    };
+    useEffect(() => {
+      window.addEventListener("scroll", ControlNavbar);
+      return () => {
+        window.removeEventListener("scroll", ControlNavbar);
+      };
+    }, [lastScrollY]);
   return (
-    <nav className="fixed top-0 left-0 right-0 z-10 bg-[#121212] bg-opacity-95 md:px-10">
+    <nav
+      className={`${show === "hide" ? "hide" : ""} ${
+        show === "show" ? "show" : ""
+      }${
+        show === "top" ? "top" : ""
+      } navbar fixed top-0 left-0 right-0 z-50 bg-[#121212] bg-opacity-95 md:px-10`}
+    >
       <div className="flex flex-wrap items-center justify-between py-2 px-2 md:py-3 mx-auto  ">
         <Link
           className=" text-2xl md:text-5xl text-white font-semibold underline decoration-purple-600/50"
