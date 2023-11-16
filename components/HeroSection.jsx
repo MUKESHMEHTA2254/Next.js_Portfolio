@@ -54,7 +54,7 @@ const HeroSection = () => {
         <div className="col-span-5 place-self-center mt-4 lg:mt-0 ">
           <div className="rounded-full bg-[#181818]  hover:bg-purple-800/70  w-[250px] h-[250px] lg:w-[300px] lg:h-[300px]  overflow-hidden shadow-md shadow-purple-500">
             <Image
-              src="/images/poster.png"
+              src="/images/poster.jpg"
               alt="logo"
               width={500}
               className=" relative top-15 left-0 "

@@ -44,11 +44,11 @@ const Footer = () => {
   ];
   return (
     <footer className="container p-12 grid grid-cols-8 footer border z-10 border-t-[#33353F] border-l-transparent border-r-transparent text-white">
-      <div className=" flex justify-between">
+      <div className=" flex justify-between sm:justify-evenly">
         <span>PORTFOLIO.</span>
       </div>
-      <div className="col-span-6">
-        <ul className="flex justify-center gap-14  ">
+      <div className="col-span-6 sm:col-span-6">
+        <ul className="flex justify-center gap-14   ">
           {footerLinks.map((link, index) => (
             <li key={index}>
               <NavLink title={link.title} href={link.path} />
