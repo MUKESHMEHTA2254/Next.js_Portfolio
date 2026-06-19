@@ -13,14 +13,20 @@ export async function POST(req) {
 
     if (!email || !subject || !message) {
       return NextResponse.json(
-        { error: "Email, subject, and message are required." },
+        {
+          error: "Email, subject, and message are required.",
+          code: "INVALID_INPUT",
+        },
         { status: 400 }
       );
     }
 
     if (!resend || !fromEmail) {
       return NextResponse.json(
-        { error: "Email service is not configured yet." },
+        {
+          error: "Contact form is temporarily unavailable. Please email me directly.",
+          code: "EMAIL_NOT_CONFIGURED",
+        },
         { status: 503 }
       );
     }
@@ -43,7 +49,7 @@ export async function POST(req) {
     return NextResponse.json({ id: data.id, success: true });
   } catch {
     return NextResponse.json(
-      { error: "Unable to send message." },
+      { error: "Unable to send message.", code: "SEND_FAILED" },
       { status: 500 }
     );
   }

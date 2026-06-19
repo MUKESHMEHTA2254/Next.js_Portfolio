@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { personalInfo } from "@/data/portfolio";
@@ -8,12 +9,14 @@ const EmailSection = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [fallbackMailto, setFallbackMailto] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage("");
     setEmailSubmitted(false);
+    setFallbackMailto("");
 
     const data = {
       email: e.target.email.value,
@@ -35,6 +38,15 @@ const EmailSection = () => {
         e.target.reset();
       } else {
         const payload = await response.json().catch(() => ({}));
+
+        if (payload.code === "EMAIL_NOT_CONFIGURED") {
+          const subject = encodeURIComponent(data.subject);
+          const body = encodeURIComponent(`From: ${data.email}\n\n${data.message}`);
+          setFallbackMailto(
+            `mailto:${personalInfo.email}?subject=${subject}&body=${body}`
+          );
+        }
+
         setErrorMessage(payload.error || "Unable to send message right now.");
       }
     } catch {
@@ -50,7 +62,7 @@ const EmailSection = () => {
         <div className="space-y-8">
           <SectionHeading
             eyebrow="Contact"
-            title="Let’s connect about engineering opportunities, products, or collaboration."
+            title="Let's connect about engineering opportunities, products, or collaboration."
             description="Recruiters, hiring teams, and collaborators can reach out directly using the contact details below or the message form."
           />
 
@@ -143,6 +155,14 @@ const EmailSection = () => {
               <p className="text-sm text-emerald-300">Message sent successfully.</p>
             ) : null}
             {errorMessage ? <p className="text-sm text-rose-300">{errorMessage}</p> : null}
+            {fallbackMailto ? (
+              <a
+                href={fallbackMailto}
+                className="inline-flex items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 px-5 py-3 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-400/15 hover:text-white"
+              >
+                Email me directly
+              </a>
+            ) : null}
           </form>
         </div>
       </div>
