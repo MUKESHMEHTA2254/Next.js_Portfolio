@@ -1,31 +1,50 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 const fromEmail = process.env.FROM_EMAIL;
-console.log(resend);
-console.log(fromEmail);
+const recipientEmail = "mukeshmehta.eng@gmail.com";
 
+export async function POST(req) {
+  try {
+    const { email, subject, message } = await req.json();
 
-export async function POST(req,res) {
-    try {
-        const {body}=await req.json();
-        const{email,subject,message}=body
-        const data = await resend.emails.send({
-            from: fromEmail,
-            to: ["mehtasagar437@gmail.com",email],
-            subject: subject,
-            react: (
-                <>
-                <h1>{subject}</h1>
-                <p>Thank you for contacting.</p>
-                    <p>{message}</p>
-                </>
-            ),
-        });
-
-        return NextResponse.json(data);
-    } catch (error) {
-        return NextResponse.json({ error });
+    if (!email || !subject || !message) {
+      return NextResponse.json(
+        { error: "Email, subject, and message are required." },
+        { status: 400 }
+      );
     }
+
+    if (!resend || !fromEmail) {
+      return NextResponse.json(
+        { error: "Email service is not configured yet." },
+        { status: 503 }
+      );
+    }
+
+    const text = [
+      `From: ${email}`,
+      `Subject: ${subject}`,
+      "",
+      message,
+    ].join("\n");
+
+    const data = await resend.emails.send({
+      from: fromEmail,
+      to: [recipientEmail],
+      reply_to: email,
+      subject: `Portfolio Contact: ${subject}`,
+      text,
+    });
+
+    return NextResponse.json({ id: data.id, success: true });
+  } catch {
+    return NextResponse.json(
+      { error: "Unable to send message." },
+      { status: 500 }
+    );
+  }
 }

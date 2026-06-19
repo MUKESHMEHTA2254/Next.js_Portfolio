@@ -1,117 +1,62 @@
 "use client";
-import React, { useTransition, useState } from "react";
 import Image from "next/image";
-import TabButton from "./TabButton";
-
-const TAB_DATA = [
-  {
-    title: "Skills",
-    id: "skills",
-    content: (
-      <ul className="list-disc pl-2">
-        <li>JavaScript</li>
-        <li>HTML5</li>
-        <li>CSS</li>
-        <li>React</li>
-        <li>Typescript</li>
-        <li>Next13</li>
-        <li>Node.js</li>
-        <li>Express</li>
-        <li>MongoDB</li>
-        <li>Redux</li>
-      </ul>
-    ),
-  },
-  {
-    title: "Education",
-    id: "education",
-    content: (
-      <ul className="list-disc pl-2">
-        <li>Fullstack Web Development</li>
-        <li>Bachelor in computer Application</li>
-      </ul>
-    ),
-  },
-  {
-    title: "Certifications",
-    id: "certifications",
-    content: (
-      <ul className="list-disc pl-2">
-        <li>IBM Full stack development</li>
-      </ul>
-    ),
-  },
-  {
-    title: "Internship",
-    id: "internship",
-    content: (
-      <ul className="list-disc pl-2">
-        <li>Full stack developer in Brillica Services</li>
-      </ul>
-    ),
-  },
-];
+import { motion } from "framer-motion";
+import { keyStats, personalInfo, professionalHighlights } from "@/data/portfolio";
+import SectionHeading from "./SectionHeading";
 
 const AboutSection = () => {
-  const [tab, setTab] = useState("skills");
-  const [isPending, startTransition] = useTransition();
-
-  const handleTabChange = (id) => {
-    startTransition(() => {
-      setTab(id);
-    });
-  };
-
   return (
-    <section className="text-white" id="about">
-      <div className="md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-5">
-        <Image
-          src="/images/about-image.png"
-          width={500}
-          height={500}
-          alt="about"
-        />
-        <div className="mt-4 md:mt-0 text-left flex flex-col h-full">
-          <h2 className="text-4xl font-bold text-white mb-4">About Me</h2>
-          <p className="text-base lg:text-lg">
-            I have experience working with JavaScript, React, Redux, Node.js,
-            Express, Next.js, Typescript,Mongodb, HTML, CSS, and Git. I am a
-            quick learner and I am always looking to expand my knowledge and
-            skill set. I am a team player and I am excited to work with others
-            to create amazing applications.
-          </p>
-          <div className="flex flex-row justify-start mt-8 relative">
-            <TabButton
-              selectTab={() => handleTabChange("skills")}
-              active={tab === "skills"}
-            >
-              {" "}
-              Skills{" "}
-            </TabButton>
-            <TabButton
-              selectTab={() => handleTabChange("education")}
-              active={tab === "education"}
-            >
-              {" "}
-              Education{" "}
-            </TabButton>
-            <TabButton
-              selectTab={() => handleTabChange("certifications")}
-              active={tab === "certifications"}
-            >
-              {" "}
-              Certifications{" "}
-            </TabButton>
-            <TabButton
-              selectTab={() => handleTabChange("internship")}
-              active={tab === "internship"}
-            >
-              {" "}
-              Internship{" "}
-            </TabButton>
+    <section id="about" className="section-shell px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
+      <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="relative mx-auto w-full max-w-md"
+        >
+          <div className="absolute inset-0 -rotate-6 rounded-[2rem] bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-violet-500/20 blur-2xl" />
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-3">
+            <Image
+              src="/images/about-image.png"
+              width={900}
+              height={900}
+              alt={`${personalInfo.name} working illustration`}
+              className="h-auto w-full rounded-[1.5rem] object-cover"
+            />
           </div>
-          <div className="mt-8">
-            {TAB_DATA.find((t) => t.id === tab).content}
+        </motion.div>
+
+        <div className="space-y-8">
+          <SectionHeading
+            eyebrow="About"
+            title="A full stack engineer focused on scalable, business-ready software."
+            description={personalInfo.about}
+          />
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {keyStats.map((stat) => (
+              <div key={stat.label} className="glass-panel interactive-card rounded-3xl p-5">
+                <p className="text-sm uppercase tracking-[0.25em] text-slate-400">{stat.label}</p>
+                <p className="mt-3 text-2xl font-semibold text-white">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="interactive-card rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 transition duration-300">
+            <div className="flex items-center justify-between gap-4">
+              <h3 className="text-xl font-semibold text-white">Professional Highlights</h3>
+              <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
+                Recruiter Snapshot
+              </span>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {professionalHighlights.map((highlight) => (
+                <div key={highlight} className="interactive-card rounded-2xl border border-white/8 bg-slate-950/40 p-4 text-sm leading-7 text-slate-300">
+                  {highlight}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

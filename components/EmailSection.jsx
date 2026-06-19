@@ -1,15 +1,20 @@
-"use client"
-import React, { useState } from "react";
-import GithubIcon from "../public/github-icon.svg";
-import LinkedinIcon from "../public/linkedin-icon.svg";
-import Link from "next/link";
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { personalInfo } from "@/data/portfolio";
+import SectionHeading from "./SectionHeading";
 
 const EmailSection = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage("");
+    setEmailSubmitted(false);
+
     const data = {
       email: e.target.email.value,
       subject: e.target.subject.value,
@@ -26,101 +31,120 @@ const EmailSection = () => {
       });
 
       if (response.ok) {
-        console.log("Message Sent");
         setEmailSubmitted(true);
+        e.target.reset();
       } else {
-        console.error("Failed to send email");
+        const payload = await response.json().catch(() => ({}));
+        setErrorMessage(payload.error || "Unable to send message right now.");
       }
-    } catch (error) {
-      console.error("Error sending email:", error);
+    } catch {
+      setErrorMessage("Unable to send message right now.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <section
-      id="contact"
-      className="grid md:grid-cols-2 my-12 md:my-12 py-24 gap-4 relative"
-    >
-      <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900 to-transparent rounded-full h-80 w-80  blur-lg absolute  transform -translate-x-1/2 -translate-1/2"></div>
-      <div className="z-10">
-        <h5 className=" z-10 text-xl font-bold text-white my-2">
-          Let&apos;s Connect
-        </h5>
-        <p className="text-[#ADB7BE] mb-4 max-w-md">
-          {" "}
-          I&apos;m currently looking for new opportunities, my inbox is always
-          open. Whether you have a question or just want to say hi, I&apos;ll
-          try my best to get back to you!
-        </p>
-        <div className="socials flex flex-row gap-2">
-          <Link href="https://github.com/MUKESHMEHTA2254">
-            <Image src={GithubIcon} alt="Github Icon" />
-          </Link>
-          <Link href="https://www.linkedin.com/in/mukesh-mehta-89b63b198/">
-            <Image src={LinkedinIcon} alt="Linkedin Icon" />
-          </Link>
+    <section id="contact" className="section-shell px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
+      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="space-y-8">
+          <SectionHeading
+            eyebrow="Contact"
+            title="Let’s connect about engineering opportunities, products, or collaboration."
+            description="Recruiters, hiring teams, and collaborators can reach out directly using the contact details below or the message form."
+          />
+
+          <div className="grid gap-4">
+            <motion.a
+              href={`mailto:${personalInfo.email}`}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.45 }}
+              className="glass-panel rounded-[2rem] p-5"
+            >
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Email</p>
+              <p className="mt-3 text-lg font-semibold text-white">{personalInfo.email}</p>
+            </motion.a>
+
+            <motion.a
+              href={`tel:${personalInfo.phone.replace(/\s+/g, "")}`}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.45, delay: 0.08 }}
+              className="glass-panel rounded-[2rem] p-5"
+            >
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Phone</p>
+              <p className="mt-3 text-lg font-semibold text-white">{personalInfo.phone}</p>
+            </motion.a>
+
+            <div className="rounded-[2rem] border border-cyan-400/15 bg-gradient-to-br from-cyan-400/10 via-blue-500/10 to-violet-500/10 p-6">
+              <p className="text-sm leading-7 text-slate-200">
+                Full Stack Software Engineer focused on Next.js, React, TypeScript, Node.js, .NET, Python, APIs, and database-driven systems.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div>
-        <form className="flex flex-col" onSubmit={handleSubmit}>
-          <div className="mb-6">
-            <label
-              htmlFor="email"
-              className="text-white block mb-2 text-sm font-medium"
+
+        <div className="glass-panel rounded-[2rem] p-6 sm:p-8">
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="email" className="mb-2 block text-sm font-medium text-white">
+                Your email
+              </label>
+              <input
+                name="email"
+                type="email"
+                id="email"
+                required
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/30"
+                placeholder="you@company.com"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="subject" className="mb-2 block text-sm font-medium text-white">
+                Subject
+              </label>
+              <input
+                name="subject"
+                type="text"
+                id="subject"
+                required
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/30"
+                placeholder="Hiring opportunity"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="message" className="mb-2 block text-sm font-medium text-white">
+                Message
+              </label>
+              <textarea
+                name="message"
+                id="message"
+                required
+                rows={6}
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/30"
+                placeholder="Tell me about the role, team, or product."
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-24px_rgba(59,130,246,0.95)] transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Your email
-            </label>
-            <input
-              name="email"
-              type="email"
-              id="email"
-              required
-              className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-              placeholder="mukesh@google.com"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="subject"
-              className="text-white block text-sm mb-2 font-medium"
-            >
-              Subject
-            </label>
-            <input
-              name="subject"
-              type="text"
-              id="subject"
-              required
-              className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Just say hi"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="message"
-              className="text-white block text-sm mb-2 font-medium"
-            >
-              Message
-            </label>
-            <textarea
-              name="message"
-              id="message"
-              className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-              placeholder="Let's talk about..."
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
-          >
-            Send Message
-          </button>
-          {emailSubmitted && (
-            <p className="text-green-500 text sm mt-2">
-              Email sent successfully!
-            </p>
-          )}
-        </form>
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
+
+            {emailSubmitted ? (
+              <p className="text-sm text-emerald-300">Message sent successfully.</p>
+            ) : null}
+            {errorMessage ? <p className="text-sm text-rose-300">{errorMessage}</p> : null}
+          </form>
+        </div>
       </div>
     </section>
   );
